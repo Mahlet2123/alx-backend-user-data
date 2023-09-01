@@ -14,4 +14,3 @@ def filter_datum(
         pattern = f'{field}=[^{separator}]+'
         message = re.sub(pattern, f'{field}={redaction}', message)
     return message
-
