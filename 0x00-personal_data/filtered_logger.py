@@ -31,6 +31,7 @@ class RedactingFormatter(logging.Formatter):
                 self.SEPARATOR
                 )
 
+
 def filter_datum(
         self,
         fields: List[str],
@@ -49,8 +50,10 @@ def get_logger() -> logging.Logger:
     function that takes no arguments and returns a
     logging.Logger object.
     """
-    logger = logging.getLogger(user_data)
+    logger = logging.getLogger("user_data")
     logger.setLevel(logging.INFO)
+    logger.propagate = False  # Do not propagate messages to other loggers
 
-    file_handler.setFormatter(RedactingFormatter)
+    stream_handler = logging.StreamHandler()
+    stream_handler.setFormatter(RedactingFormatter)
     return logger
