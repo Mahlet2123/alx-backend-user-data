@@ -30,12 +30,11 @@ class RedactingFormatter(logging.Formatter):
                 PII_FIELDS,
                 self.REDACTION,
                 log_message,
-                self.SEPARATOR
+                self.SEPARATOR,
                 )
 
 
 def filter_datum(
-        self,
         fields: List[str],
         redaction: str,
         message: str,
