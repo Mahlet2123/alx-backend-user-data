@@ -5,6 +5,9 @@ import re
 import logging
 
 
+PII_FIELDS = ("name", "email", "phone", "ssn", "password")
+
+
 class RedactingFormatter(logging.Formatter):
     """ Redacting Formatter class
         """
@@ -21,21 +24,33 @@ class RedactingFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
         """ format method """
         log_message = super().format(record)
-        return self.filter_datum(
-                self.fields,
+        return filter_datum(
+                PII_FIELDS,
                 self.REDACTION,
                 log_message,
                 self.SEPARATOR
                 )
 
-    def filter_datum(
-            self,
-            fields: List[str],
-            redaction: str,
-            message: str,
-            separator: str) -> str:
-        """ returns the log message obfuscated """
-        for field in fields:
-            pattern = f'{field}=[^{separator}]+'
-            message = re.sub(pattern, f'{field}={redaction}', message)
-        return message
+def filter_datum(
+        self,
+        fields: List[str],
+        redaction: str,
+        message: str,
+        separator: str) -> str:
+    """ returns the log message obfuscated """
+    for field in fields:
+        pattern = f'{field}=[^{separator}]+'
+        message = re.sub(pattern, f'{field}={redaction}', message)
+    return message
+
+
+def get_logger() -> logging.Logger:
+    """
+    function that takes no arguments and returns a
+    logging.Logger object.
+    """
+    logger = logging.getLogger(user_data)
+    logger.setLevel(logging.INFO)
+
+    file_handler.setFormatter(RedactingFormatter)
+    return logger
