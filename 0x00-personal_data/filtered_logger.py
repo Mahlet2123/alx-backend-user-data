@@ -79,3 +79,20 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
             )
 
     return connector
+
+
+def main() -> None:
+    """ main function"""
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT * from users")
+    for message in cursor:
+        user_log = logging.LogRecord("user_data", logging.INFO, None, None, message, None, None)
+        formatter = RedactingFormatter(PII_FIELDS)
+        print(formatter.format(user_log))
+    cursor.close()
+    db.close()
+
+
+if __name__ == "__main__":
+    main()
