@@ -85,7 +85,10 @@ def main() -> None:
     db = get_db()
     cursor = db.cursor()
     cursor.execute("SELECT * from users")
-    for message in cursor:
+    all_fields = ("name", "email", "phone", "ssn", "password", "ip", "last_login", "user_agent")
+    for msg in cursor:
+        # Create a formatted message with field=value pairs
+        message = ';'.join([f'{field}={value}' for field, value in zip(all_fields, msg)])
         user_log = logging.LogRecord("user_data", logging.INFO, None, None, message, None, None)
         formatter = RedactingFormatter(PII_FIELDS)
         print(formatter.format(user_log))
