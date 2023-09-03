@@ -26,7 +26,7 @@ class RedactingFormatter(logging.Formatter):
         """format method"""
         log_message = super().format(record)
         return filter_datum(
-            PII_FIELDS,
+            self.fields,
             self.REDACTION,
             log_message,
             self.SEPARATOR,
