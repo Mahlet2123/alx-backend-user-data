@@ -10,9 +10,9 @@ class Auth:
         """
         Checks if authentication is required for the given path.
         """
-        # Remove any trailing slash from the path before checking
-        if path and not path.endswith('/'):
-            path += '/'
+        if path is not None and excluded_paths is not None:
+            if not path.endswith('/'):
+                path += '/'
 
         if not path or path not in excluded_paths:
             return True
