@@ -18,7 +18,7 @@ auth = getenv("AUTH_TYPE", None)
 
 if auth:
     from api.v1.auth.auth import Auth
-    auth = Auth()
+    auth = BasicAuth()
 
 
 @app.before_request
