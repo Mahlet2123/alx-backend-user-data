@@ -27,7 +27,7 @@ def before_request_handler():
     for authentication and request filtering
     """
     request_path = [
-            '/api/v1/status/',
+            '/api/v1/stat*',
             '/api/v1/unauthorized/',
             '/api/v1/forbidden/'
             ]

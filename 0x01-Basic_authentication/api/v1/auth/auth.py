@@ -2,6 +2,7 @@
 """ auth module """
 from flask import request
 from typing import List, TypeVar
+from fnmatch import fnmatch
 
 
 class Auth:
@@ -11,10 +12,9 @@ class Auth:
         Checks if authentication is required for the given path.
         """
         if path is not None and excluded_paths is not None:
-            if not path.endswith('/'):
-                path += '/'
-            if path in excluded_paths:
-                return False
+            for excluded_path in excluded_paths:
+                if fnmatch(path, excluded_path):
+                    return False
 
         if not path or not excluded_paths or path not in excluded_paths:
             return True
