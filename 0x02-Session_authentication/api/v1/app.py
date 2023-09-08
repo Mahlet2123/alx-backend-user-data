@@ -37,10 +37,10 @@ def before_request_handler():
     need_auth = auth.require_auth(request.path, request_path)
     if not need_auth:
         return
-    if (
+    if(
             auth.authorization_header(request) is None
             and auth.session_cookie(request) is None
-        ):
+            ):
         abort(401)
     elif auth.current_user(request) is None:
         abort(403)
