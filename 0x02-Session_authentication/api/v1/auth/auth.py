@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """ auth module """
+import os
 from flask import request
 from typing import List, TypeVar
 from fnmatch import fnmatch
@@ -32,3 +33,14 @@ class Auth:
         Gets the current user based on the Flask request.
         """
         return None
+
+    def session_cookie(self, request=None):
+
+        """
+        returns a cookie value from a request
+        """
+        if request is None:
+            return None
+        
+        self.session_name = os.getenv('SESSION_NAME', '_my_session_id')
+        return request.cookies.get(self.session_name)
