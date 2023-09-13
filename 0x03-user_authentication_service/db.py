@@ -5,9 +5,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm.session import Session
+from sqlalchemy.exc import NoResultFound, InvalidRequestError
 
 from user import Base, User
-import uuid
 
 
 class DB:
@@ -28,7 +28,7 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user0(self, email: str, hashed_password: str) -> User:
+    def add_user(self, email: str, hashed_password: str) -> User:
         """
         The method should save the user to the database
         """
@@ -39,14 +39,15 @@ class DB:
         session.commit()
         return user
 
-    def add_user(self, email: str, hashed_password: str) -> User:
-        """Adds a new user to the database.
+    def find_user_by(self, **kwargs) -> User:
+        """
+        returns the first row found in the users table as
+        filtered by the method’s input arguments
         """
         try:
-            new_user = User(email=email, hashed_password=hashed_password)
-            self._session.add(new_user)
-            self._session.commit()
-        except Exception:
-            self._session.rollback()
-            new_user = None
-        return new_user
+            user = self.__session.query(User).filter_by(**kwargs).first()
+            if not user:
+                raise NoResultFound
+            return user
+        except ( NoResultFound, InvalidRequestError ) as e:
+            raise e
