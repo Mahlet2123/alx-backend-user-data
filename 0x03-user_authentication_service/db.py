@@ -11,12 +11,10 @@ import uuid
 
 
 class DB:
-    """DB class
-    """
+    """DB class"""
 
     def __init__(self) -> None:
-        """Initialize a new DB instance
-        """
+        """Initialize a new DB instance"""
         self._engine = create_engine("sqlite:///a.db", echo=True)
         Base.metadata.drop_all(self._engine)
         Base.metadata.create_all(self._engine)
@@ -24,8 +22,7 @@ class DB:
 
     @property
     def _session(self) -> Session:
-        """Memoized session object
-        """
+        """Memoized session object"""
         if self.__session is None:
             DBSession = sessionmaker(bind=self._engine)
             self.__session = DBSession()
@@ -35,10 +32,7 @@ class DB:
         """
         The method should save the user to the database
         """
-        user = User(
-                email = email,
-                hashed_password = hashed_password
-                )
+        user = User(email=email, hashed_password=hashed_password)
 
         session = self._session
         session.add(user)
