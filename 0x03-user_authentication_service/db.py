@@ -40,6 +40,6 @@ class DB:
         user.hashed_password = hashed_password
 
         session = self._session
-        self.__session.add(user)
-        self.__session.commit()
+        session.add(user)
+        session.commit()
         return user
