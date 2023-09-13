@@ -28,7 +28,7 @@ class DB:
             self.__session = DBSession()
         return self.__session
 
-    def add_user(self, email: str, hashed_password: str) -> User:
+    def add_user0(self, email: str, hashed_password: str) -> User:
         """
         The method should save the user to the database
         """
@@ -38,3 +38,15 @@ class DB:
         session.add(user)
         session.commit()
         return user
+
+    def add_user(self, email: str, hashed_password: str) -> User:
+        """Adds a new user to the database.
+        """
+        try:
+            new_user = User(email=email, hashed_password=hashed_password)
+            self._session.add(new_user)
+            self._session.commit()
+        except Exception:
+            self._session.rollback()
+            new_user = None
+        return new_user
