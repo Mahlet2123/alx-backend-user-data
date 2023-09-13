@@ -49,5 +49,5 @@ class DB:
             if not user:
                 raise NoResultFound
             return user
-        except ( NoResultFound, InvalidRequestError ) as e:
+        except (NoResultFound, InvalidRequestError) as e:
             raise e
